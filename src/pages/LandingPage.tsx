@@ -1,301 +1,353 @@
-import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Shield, Zap, Send, ArrowRight, Lock, Check } from 'lucide-react';
+import { Zap, ArrowRight, Lock, Shield, Eye, Send, Sparkles } from 'lucide-react';
+import { useRef } from 'react';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.1,
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1] as const
+    },
+  }),
+};
 
 export function LandingPage() {
-  const { scrollYProgress } = useScroll();
-  const heroY = useTransform(scrollYProgress, [0, 0.2], [0, 100]);
-  
-  const [isSent, setIsSent] = useState(false);
+  const targetRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ["start start", "end end"]
+  });
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[#fdfdfc]">
-      <div className="grain-overlay" />
-
-      {/* --- NAV --- */}
-      <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-5 mix-blend-difference">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-              <Zap size={16} className="text-black" fill="black" />
-            </div>
-            <span className="text-xl font-bold tracking-tight text-white">Flux</span>
+    <div className="min-h-screen bg-[#fcfaf7] text-[#0d0b18] selection:bg-indigo-100">
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-5 flex items-center justify-between bg-white/70 backdrop-blur-xl border-b border-black/[0.03]">
+        <div className="flex items-center gap-2.5 group cursor-pointer">
+          <div className="w-9 h-9 rounded-xl bg-black flex items-center justify-center transition-transform group-hover:scale-110 shadow-lg shadow-black/10">
+            <Zap size={18} className="text-white" fill="white" />
           </div>
-          <div className="flex items-center gap-6">
-            <Link to="/login" className="text-sm font-medium text-white/80 hover:text-white transition-colors">Log in</Link>
-            <Link to="/register" className="px-5 py-2.5 bg-white text-black text-sm font-semibold rounded-full hover:scale-105 transition-transform">
-              Get Started
-            </Link>
-          </div>
+          <span className="text-xl font-black tracking-tighter text-black">FLUX</span>
+        </div>
+        <div className="flex items-center gap-4 md:gap-8">
+          <Link to="/login" className="text-xs font-bold uppercase tracking-widest text-black/60 hover:text-black transition-colors">Login</Link>
+          <Link to="/register" className="px-5 py-2.5 bg-black text-white text-[10px] font-black uppercase tracking-widest rounded-full hover:scale-105 transition-transform active:scale-95 shadow-xl shadow-black/20">Register</Link>
         </div>
       </nav>
 
-      {/* --- 1. HERO SECTION: "Encrypted, But Beautiful" --- */}
-      <section className="relative min-h-screen flex items-center justify-center pt-20 px-6 overflow-hidden">
-        {/* Soft volumetric gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#fdfbf7] via-[#f0f0fa] to-[#e6f0ff] -z-20" />
-        
-        {/* Abstract flowing ribbons */}
-        <div className="absolute inset-0 -z-10 overflow-hidden flex items-center justify-center">
+      {/* 1. HERO SECTION — “Encrypted, But Beautiful” */}
+      <section className="relative min-h-[100svh] flex items-center justify-center pt-24 pb-12 overflow-hidden bg-hero-gradient">
+        {/* Floating background elements */}
+        <div className="absolute inset-0 pointer-events-none">
           <motion.div 
-            className="absolute w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] rounded-full blur-[80px] mix-blend-multiply opacity-40 animate-orb-1"
-            style={{ background: 'radial-gradient(circle, #e0c3fc 0%, rgba(142, 197, 252, 0) 70%)' }}
+            animate={{ 
+              x: [0, 50, 0],
+              y: [0, -30, 0],
+              rotate: [0, 5, 0]
+            }}
+            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+            className="absolute top-1/4 -left-20 w-64 md:w-96 h-64 md:h-96 bg-indigo-200/30 blur-[80px] md:blur-[120px] rounded-full" 
           />
           <motion.div 
-            className="absolute w-[70vw] h-[70vw] max-w-[700px] max-h-[700px] rounded-full blur-[80px] mix-blend-multiply opacity-30 animate-orb-2"
-            style={{ background: 'radial-gradient(circle, #8ec5fc 0%, rgba(224, 195, 252, 0) 70%)', right: '-10%', top: '20%' }}
+            animate={{ 
+              x: [0, -40, 0],
+              y: [0, 60, 0],
+            }}
+            transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+            className="absolute bottom-1/4 -right-20 w-80 md:w-[500px] h-80 md:h-[500px] bg-purple-200/20 blur-[100px] md:blur-[150px] rounded-full" 
           />
         </div>
 
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center w-full relative z-10">
-          {/* Typographic side */}
-          <motion.div 
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-xl"
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-black/5 bg-white/40 backdrop-blur-md mb-8">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#6e2fff] animate-pulse" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-black/60">End-to-End Encrypted</span>
-            </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div className="text-center lg:text-left pt-8 lg:pt-0">
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={fadeUp}
+              custom={0}
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/50 border border-white/80 backdrop-blur-sm text-[9px] md:text-[10px] font-black uppercase tracking-widest mb-6 md:mb-8"
+            >
+              <Sparkles size={12} className="text-indigo-500" />
+              Secure by architectural choice
+            </motion.div>
             
-            <h1 className="text-6xl sm:text-7xl lg:text-8xl font-black leading-[1.05] tracking-tight mb-8 text-[#1a1a24]">
-              Your words.<br />
-              <span className="text-gradient-purple">Only yours.</span>
-            </h1>
+            <motion.h1 
+              initial="hidden"
+              animate="visible"
+              variants={fadeUp}
+              custom={1}
+              className="text-5xl sm:text-7xl lg:text-9xl font-black leading-[0.95] md:leading-[0.9] tracking-tighter mb-6 md:mb-8"
+            >
+              Encrypted,<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500">Beautifully.</span>
+            </motion.h1>
             
-            <p className="text-lg sm:text-xl text-black/50 leading-relaxed mb-10 max-w-md font-medium">
-              Flux protects every conversation with military-grade encryption, so you can connect freely, privately, beautifully.
-            </p>
-            
-            <div className="flex items-center gap-4">
-              <Link to="/register" className="btn-primary shadow-2xl shadow-purple-500/30">
-                Start Messaging <ArrowRight size={18} />
-              </Link>
-            </div>
-          </motion.div>
+            <motion.p 
+              initial="hidden"
+              animate="visible"
+              variants={fadeUp}
+              custom={2}
+              className="text-lg md:text-xl text-black/60 max-w-md mx-auto lg:mx-0 leading-relaxed mb-8 md:mb-10"
+            >
+              Flux is a high-fidelity messaging platform where military-grade encryption meets cinematic design. Your privacy isn't just a feature — it's an aesthetic.
+            </motion.p>
 
-          {/* 3D Glass UI Mockup */}
-          <motion.div 
-            style={{ y: heroY }}
-            initial={{ opacity: 0, rotateY: 20, rotateX: 10, scale: 0.9 }}
-            animate={{ opacity: 1, rotateY: -15, rotateX: 5, scale: 1 }}
-            transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
-            className="relative lg:h-[700px] flex items-center justify-center perspective-[2000px] transform-gpu"
+            <motion.div 
+              initial="hidden"
+              animate="visible"
+              variants={fadeUp}
+              custom={3}
+              className="flex items-center justify-center lg:justify-start gap-4"
+            >
+              <Link to="/register" className="px-8 md:px-10 py-4 md:py-5 bg-black text-white rounded-2xl font-bold flex items-center gap-3 hover:scale-105 transition-transform shadow-2xl shadow-black/20">
+                Get Early Access <ArrowRight size={18} />
+              </Link>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-full max-w-lg mx-auto lg:max-w-none"
           >
-            <div className="glass-panel w-full max-w-[400px] rounded-[40px] p-6 shadow-[0_40px_80px_rgba(0,0,0,0.1)] border border-white/60 relative overflow-hidden">
-              {/* Header */}
-              <div className="flex items-center justify-between mb-8 pb-4 border-b border-black/5">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#6e2fff] to-[#0ea5e9] flex items-center justify-center text-white font-bold shadow-lg">A</div>
-                  <div>
-                    <h3 className="font-bold text-sm">Ava</h3>
-                    <p className="text-[10px] text-green-600 flex items-center gap-1 font-semibold">
-                      <Lock size={8} /> Encrypted
-                    </p>
-                  </div>
+            <div className="glass-ui rounded-[32px] md:rounded-[40px] p-6 md:p-8 w-full aspect-[4/5] lg:aspect-[4/5] relative overflow-hidden border-white/40 shadow-2xl animate-float">
+              {/* Fake UI Content */}
+              <div className="space-y-6">
+                {[
+                  { text: "Your keys never leave the device.", delay: 0 },
+                  { text: "RSA-2048 + AES-GCM.", delay: 0.2 },
+                  { text: "Zero metadata logging.", delay: 0.4 },
+                ].map((msg, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 1 + msg.delay }}
+                    className="glass-capsule px-6 py-4 rounded-3xl max-w-[80%] relative overflow-hidden"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-transparent animate-pulse" />
+                    <p className="text-sm font-semibold opacity-80">{msg.text}</p>
+                  </motion.div>
+                ))}
+                
+                <div className="pt-12 space-y-4">
+                  <div className="h-2 w-1/3 bg-black/5 rounded-full" />
+                  <div className="h-2 w-1/2 bg-black/5 rounded-full" />
                 </div>
               </div>
 
-              {/* Messages */}
-              <div className="space-y-6 mb-8 relative">
-                <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.8 }} className="hero-bubble w-[85%]">
-                  Just sent over the final mockups ✨
-                </motion.div>
-                
-                <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.2 }} className="hero-bubble encrypted w-[85%] ml-auto">
-                  <div className="liquid-light" />
-                  These look incredible!
-                </motion.div>
-                
-                <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.6 }} className="hero-bubble w-[85%]">
-                  Love the direction. Let's ship it! 🚀
-                </motion.div>
-              </div>
-
-              {/* Input */}
-              <div className="h-12 w-full rounded-full bg-white/50 border border-white/60 flex items-center px-4">
-                <span className="text-xs text-black/30 font-medium">Type a message...</span>
+              {/* Data stream ribbons */}
+              <div className="absolute -bottom-20 -right-20 opacity-20 rotate-45 pointer-events-none">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="h-[2px] w-[600px] bg-indigo-500 mb-8" style={{ opacity: 1 - i * 0.2 }} />
+                ))}
               </div>
             </div>
-            
-            {/* Floating decorative elements */}
-            <motion.div 
-              animate={{ y: [-10, 10, -10] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -right-12 top-1/4 glass-pill px-4 py-2 rounded-full flex items-center gap-2 text-xs font-bold text-[#6e2fff]"
-            >
-              <Shield size={14} /> AES-256-GCM
-            </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* --- 2. FEATURE SECTION: "Privacy in Motion" --- */}
-      <section className="py-32 px-6 relative overflow-hidden bg-[#faf9f6]">
-        {/* Abstract animated paths */}
-        <div className="absolute inset-0 pointer-events-none opacity-60">
-          <svg className="absolute w-full h-full" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-            <path id="path1" d="M -100,200 C 300,100 600,800 1100,300" fill="none" stroke="url(#grad1)" strokeWidth="80" strokeLinecap="round" className="blur-[20px] opacity-30" />
-            <path id="path2" d="M -100,800 C 400,900 500,200 1100,600" fill="none" stroke="url(#grad2)" strokeWidth="120" strokeLinecap="round" className="blur-[30px] opacity-20" />
-            <defs>
-              <linearGradient id="grad1"><stop offset="0%" stopColor="#ff7e5f"/><stop offset="100%" stopColor="#feb47b"/></linearGradient>
-              <linearGradient id="grad2"><stop offset="0%" stopColor="#6e2fff"/><stop offset="100%" stopColor="#0ea5e9"/></linearGradient>
-            </defs>
-          </svg>
-        </div>
-
-        <div className="max-w-7xl mx-auto relative z-10 grid lg:grid-cols-2 gap-20 items-center">
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
-            className="order-2 lg:order-1 relative h-[500px] flex items-center justify-center"
-          >
-            {/* Visualizer */}
-            <div className="relative w-full max-w-[400px] aspect-square rounded-full border border-black/5 bg-white/20 backdrop-blur-xl flex items-center justify-center shadow-2xl">
-              <motion.div animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }} className="absolute inset-4 rounded-full border border-dashed border-[#6e2fff]/30" />
-              
-              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-[#ff2d55] to-[#6e2fff] flex items-center justify-center shadow-[0_0_60px_rgba(110,47,255,0.4)] relative z-10">
-                <Lock size={40} className="text-white" />
-              </div>
-
-              {/* Orbiting nodes */}
-              {[0, 1, 2].map((i) => (
-                <motion.div 
-                  key={i}
-                  className="absolute w-12 h-12 rounded-full glass-pill flex items-center justify-center shadow-lg"
-                  animate={{ 
-                    x: [Math.cos(i*2)*150, Math.cos(i*2)*180, Math.cos(i*2)*150],
-                    y: [Math.sin(i*2)*150, Math.sin(i*2)*180, Math.sin(i*2)*150],
-                  }}
-                  transition={{ duration: 3 + i, repeat: Infinity, ease: "easeInOut" }}
+      {/* 2. FEATURE SECTION — “Privacy in Motion” */}
+      <section className="py-20 md:py-32 bg-[#fffcf5] overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+            <div className="relative aspect-square max-w-lg mx-auto w-full">
+              {/* Dynamic visualization */}
+              <div className="absolute inset-0 flex items-center justify-center scale-75 md:scale-100">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                  className="w-full h-full border border-black/5 rounded-full relative"
                 >
-                  <span className="text-xs font-mono font-bold text-[#6e2fff]">**#@!</span>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="order-1 lg:order-2">
-            <h2 className="text-5xl font-black mb-6 text-[#1a1a24] leading-tight">
-              Privacy in <span className="text-gradient">Motion.</span>
-            </h2>
-            <p className="text-xl text-black/50 mb-10 leading-relaxed font-medium">
-              We've turned complex cryptography into an invisible, living system. Messages are scrambled into unrecognizable fragments before they ever leave your device.
-            </p>
-            
-            <ul className="space-y-6">
-              {[
-                { title: 'Zero-Knowledge Architecture', desc: 'Our servers never see your plaintext data.' },
-                { title: 'Perfect Forward Secrecy', desc: 'New keys are generated for every single message.' },
-                { title: 'Local Device Encryption', desc: 'Keys never leave the secure enclave of your browser.' }
-              ].map((feature, i) => (
-                <li key={i} className="flex gap-4">
-                  <div className="w-10 h-10 rounded-2xl bg-[#6e2fff]/10 flex items-center justify-center flex-shrink-0 text-[#6e2fff]">
-                    <Check size={20} />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-[#1a1a24] text-lg">{feature.title}</h4>
-                    <p className="text-black/50">{feature.desc}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* --- 3. TRUST SECTION: "Human-Centered Privacy" --- */}
-      <section className="py-32 px-6 relative bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto text-center mb-20 relative z-10">
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="text-5xl lg:text-7xl font-black text-[#1a1a24] mb-6 tracking-tight"
-          >
-            Human-Centered <span className="text-gradient-purple">Privacy.</span>
-          </motion.h2>
-          <p className="text-xl text-black/50 max-w-2xl mx-auto font-medium">
-            Security shouldn't feel like a vault. It should feel like a safe space where you can be your most authentic self.
-          </p>
-        </div>
-
-        <div className="relative max-w-4xl mx-auto h-[600px] flex items-center justify-center">
-          {/* Abstract human silhouette concept */}
-          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-white z-20 pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-white z-20 pointer-events-none" />
-          
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 1.5 }}
-            className="relative w-[300px] h-[500px] rounded-full blur-[2px] bg-gradient-to-b from-[#fde6e6] to-[#e6e9fd] opacity-80 silhouette-mask shadow-[0_0_100px_rgba(255,45,85,0.2)]"
-          >
-            {/* Floating protected fragments inside */}
-            <motion.div animate={{ y: [-10, 10, -10] }} transition={{ duration: 5, repeat: Infinity }} className="absolute top-1/4 left-4 glass-pill px-3 py-1.5 rounded-full text-[10px] font-bold text-black/40 blur-[1px]">@alex_smith</motion.div>
-            <motion.div animate={{ y: [10, -10, 10] }} transition={{ duration: 6, repeat: Infinity }} className="absolute top-1/2 right-4 glass-pill px-3 py-1.5 rounded-full text-[10px] font-bold text-black/40 blur-[1px]">"See you at 8"</motion.div>
-            <motion.div animate={{ y: [-5, 15, -5] }} transition={{ duration: 4, repeat: Infinity }} className="absolute bottom-1/3 left-1/4 glass-pill px-3 py-1.5 rounded-full text-[10px] font-bold text-black/40 blur-[1px]">Location shared</motion.div>
-          </motion.div>
-
-          {/* Protective halos */}
-          <motion.div animate={{ rotate: 360 }} transition={{ duration: 40, repeat: Infinity, ease: "linear" }} className="absolute w-[500px] h-[500px] rounded-full border border-black/5" />
-          <motion.div animate={{ rotate: -360 }} transition={{ duration: 50, repeat: Infinity, ease: "linear" }} className="absolute w-[650px] h-[650px] rounded-full border border-[#6e2fff]/10" />
-        </div>
-      </section>
-
-      {/* --- 4. CTA SECTION: "Send Freely" --- */}
-      <section className="min-h-screen relative flex flex-col items-center justify-center px-6 overflow-hidden bg-sunset-gradient">
-        <div className="absolute inset-0 bg-black/10 mix-blend-overlay" />
-        <div className="grain-overlay opacity-10" />
-
-        <div className="relative z-10 text-center flex flex-col items-center">
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="text-6xl md:text-8xl font-black text-white mb-12 drop-shadow-2xl"
-          >
-            Send Freely.
-          </motion.h2>
-
-          {/* Surreal jelly button */}
-          <div className="relative">
-            {isSent && (
-              <motion.div 
-                initial={{ opacity: 1 }} animate={{ opacity: 0, scale: 2 }} transition={{ duration: 1 }}
-                className="absolute inset-0 rounded-full border-4 border-white/50"
-              />
-            )}
-            
-            <button
-              onClick={() => setIsSent(true)}
-              onMouseLeave={() => setIsSent(false)}
-              className="relative w-40 h-40 rounded-[2rem] bg-white/20 backdrop-blur-md border-2 border-white/40 shadow-[0_20px_50px_rgba(0,0,0,0.2),inset_0_2px_10px_rgba(255,255,255,0.5)] flex items-center justify-center text-white jelly-btn overflow-hidden group hover:bg-white/30"
-            >
-              <Send size={48} className="transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              
-              {/* Expanding bubbles on click */}
-              {isSent && (
-                <>
                   {[...Array(12)].map((_, i) => (
                     <motion.div
                       key={i}
-                      initial={{ scale: 0, x: 0, y: 0, opacity: 1 }}
                       animate={{ 
-                        scale: Math.random() * 2 + 0.5,
-                        x: (Math.random() - 0.5) * 400, 
-                        y: (Math.random() - 0.5) * 400,
-                        opacity: 0
+                        scale: [1, 1.2, 1],
+                        opacity: [0.3, 0.6, 0.3]
                       }}
-                      transition={{ duration: 0.8, ease: "easeOut" }}
-                      className="absolute w-8 h-8 rounded-full bg-white/60 blur-[2px]"
+                      transition={{ duration: 3, delay: i * 0.5, repeat: Infinity }}
+                      className="absolute w-3 md:w-4 h-3 md:h-4 rounded-full bg-coral-500"
+                      style={{ 
+                        top: '50%', 
+                        left: '50%',
+                        transform: `rotate(${i * 30}deg) translate(clamp(120px, 20vw, 250px))` 
+                      }}
                     />
                   ))}
-                </>
-              )}
-            </button>
+                </motion.div>
+                
+                <div className="absolute w-48 md:w-64 h-48 md:h-64 bg-white rounded-[32px] md:rounded-[40px] shadow-2xl flex flex-col p-6 items-center justify-center text-center">
+                  <div className="w-12 md:w-16 h-12 md:h-16 rounded-2xl md:rounded-3xl bg-indigo-50 flex items-center justify-center mb-4">
+                    <Shield className="text-indigo-600" size={24} />
+                  </div>
+                  <h4 className="text-xs md:text-sm font-black uppercase tracking-widest mb-1">Encrypted</h4>
+                  <p className="text-[9px] md:text-[10px] opacity-40 font-mono">X82-KLA-992-P</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center lg:text-left">
+              <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.2em] text-coral-500 mb-6 block">Living System</span>
+              <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-6 md:mb-8 leading-tight">
+                Messages that<br />
+                live in the <span className="italic">void.</span>
+              </h2>
+              <p className="text-lg md:text-xl text-black/60 leading-relaxed mb-8 md:mb-12">
+                Traditional apps "secure" your data on their servers. Flux secures your data at the moment of creation. Our backend is a blind processor — it moves information without ever knowing what it contains.
+              </p>
+              
+              <div className="grid grid-cols-2 gap-8 max-w-sm mx-auto lg:mx-0">
+                <div>
+                  <h5 className="font-black text-xl md:text-2xl mb-1 md:mb-2">0.0ms</h5>
+                  <p className="text-[9px] md:text-xs uppercase font-bold tracking-widest opacity-40">Decryption Latency</p>
+                </div>
+                <div>
+                  <h5 className="font-black text-xl md:text-2xl mb-1 md:mb-2">2048-bit</h5>
+                  <p className="text-[9px] md:text-xs uppercase font-bold tracking-widest opacity-40">Identity Proof</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. TRUST / SECURITY SECTION — “Human-Centered Privacy” */}
+      <section className="py-20 md:py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="text-center lg:text-left order-2 lg:order-1">
+            <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.2em] text-indigo-500 mb-6 block">Human Scale</span>
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-6 md:mb-8 leading-tight">
+              Privacy as an<br />extension of self.
+            </h2>
+            <p className="text-lg md:text-xl text-black/60 leading-relaxed mb-8 md:mb-10">
+              Your conversations are more than data — they're your thoughts, your intimacy, and your identity. We built Flux to feel like a vault that only you hold the key to.
+            </p>
+            
+            <div className="space-y-6 max-w-lg mx-auto lg:mx-0">
+              {[
+                { icon: Eye, title: "Zero Knowledge", desc: "We don't know who you are or what you say." },
+                { icon: Lock, title: "Self-Custody", desc: "Your private keys live in your browser's indexedDB, never our servers." }
+              ].map((item, i) => (
+                <div key={i} className="flex gap-4 text-left">
+                  <div className="w-10 md:w-12 h-10 md:h-12 rounded-xl md:rounded-2xl bg-[#fcfaf7] flex items-center justify-center shrink-0">
+                    <item.icon size={18} className="text-indigo-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-base md:text-lg">{item.title}</h4>
+                    <p className="text-xs md:text-sm opacity-50 leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
           
-          <p className="mt-8 text-white/80 font-medium text-lg tracking-wide">
-            Tap to experience. Then <Link to="/register" className="text-white font-bold underline decoration-2 underline-offset-4 hover:text-[#ff2d55] transition-colors">join Flux</Link>.
+          <div className="relative order-1 lg:order-2">
+            <motion.div
+              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              viewport={{ once: true }}
+              className="rounded-[40px] md:rounded-[60px] overflow-hidden shadow-2xl aspect-square relative bg-gradient-to-br from-orange-50 to-purple-50"
+            >
+              <img 
+                src="/flux_human_security.png" 
+                alt="Human-Centered Security"
+                className="w-full h-full object-cover mix-blend-multiply opacity-90"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-white/40 to-transparent" />
+              
+              {/* Floating UI bits */}
+              <motion.div 
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity }}
+                className="absolute top-8 md:top-12 right-8 md:right-12 glass-ui p-3 md:p-4 rounded-xl md:rounded-2xl border-white shadow-xl"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-6 md:w-8 h-6 md:h-8 rounded-full bg-indigo-500" />
+                  <div className="space-y-1">
+                    <div className="h-1.5 md:h-2 w-12 md:w-16 bg-black/10 rounded-full" />
+                    <div className="h-1 md:h-1.5 w-8 md:w-10 bg-black/5 rounded-full" />
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. CTA / FINAL SECTION — “Send Freely” */}
+      <section className="relative min-h-[70vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden py-20 md:py-32">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="/flux_send_freely_cta.png" 
+            alt="CTA Background"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
+        </div>
+        
+        <div className="relative z-10 text-center max-w-4xl mx-auto px-6 md:px-8">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            className="mb-8 md:mb-12 inline-block"
+          >
+            <div className="w-24 md:w-32 h-24 md:h-32 rounded-[32px] md:rounded-[40px] bg-white flex items-center justify-center shadow-2xl animate-float">
+              <Send size={32} className="md:size-[40px] text-indigo-600 rotate-[-15deg]" />
+            </div>
+          </motion.div>
+
+          <h2 className="text-5xl md:text-7xl lg:text-9xl font-black text-white tracking-tighter mb-8 md:mb-10 leading-[0.95] md:leading-none">
+            Speak your truth.<br />
+            <span className="italic opacity-80">Unobserved.</span>
+          </h2>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6">
+            <Link 
+              to="/register" 
+              className="w-full sm:w-auto px-10 md:px-12 py-5 md:py-6 bg-white text-black text-base md:text-lg font-black uppercase tracking-widest rounded-[20px] md:rounded-3xl hover:scale-110 transition-transform shadow-2xl active:scale-95 text-center"
+            >
+              Start Chatting
+            </Link>
+            <Link 
+              to="/login" 
+              className="w-full sm:w-auto px-10 md:px-12 py-5 md:py-6 border-2 border-white/40 text-white text-base md:text-lg font-black uppercase tracking-widest rounded-[20px] md:rounded-3xl hover:bg-white/10 transition-colors backdrop-blur-md text-center"
+            >
+              Sign In
+            </Link>
+          </div>
+
+          <p className="mt-12 md:mt-16 text-white/50 text-[9px] md:text-xs font-black uppercase tracking-[0.3em] md:tracking-[0.4em]">
+            AES-256-GCM · RSA-OAEP-2048 · Zero Knowledge
           </p>
         </div>
       </section>
+
+      {/* Simple Footer */}
+      <footer className="py-12 bg-black text-white px-6 md:px-8">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 md:gap-4">
+          <div className="flex items-center gap-3">
+             <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center">
+              <Zap size={16} className="text-black" fill="black" />
+            </div>
+            <span className="text-xl font-black tracking-tighter">FLUX</span>
+          </div>
+          <div className="flex flex-wrap justify-center gap-8 md:gap-12 text-[10px] md:text-xs font-bold uppercase tracking-widest opacity-60">
+            <a href="#" className="hover:text-white transition-colors">Privacy</a>
+            <a href="#" className="hover:text-white transition-colors">Github</a>
+            <a href="#" className="hover:text-white transition-colors">Status</a>
+          </div>
+          <p className="text-[9px] md:text-[10px] uppercase font-bold tracking-widest opacity-40">
+            © 2026 Flux Cryptography Group.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
