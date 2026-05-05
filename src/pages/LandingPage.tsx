@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Zap, ArrowRight, Lock, Shield, Eye, Send, Sparkles } from 'lucide-react';
-import { useRef } from 'react';
+
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -17,11 +17,7 @@ const fadeUp = {
 };
 
 export function LandingPage() {
-  const targetRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start start", "end end"]
-  });
+
 
   return (
     <div className="min-h-screen bg-[#fcfaf7] text-[#0d0b18] selection:bg-indigo-100">
