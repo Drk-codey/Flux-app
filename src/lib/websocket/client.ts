@@ -22,8 +22,12 @@ export class WebSocketClient {
   private createConnection() {
     if (!this.accessToken) return;
 
+    const isProd = import.meta.env.PROD;
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.host}/ws?token=${this.accessToken}`;
+    const host = isProd ? 'whisperbox.koyeb.app' : window.location.host;
+    const wsUrl = isProd 
+      ? `wss://${host}/ws?token=${this.accessToken}`
+      : `${protocol}//${host}/ws?token=${this.accessToken}`;
     this.ws = new WebSocket(wsUrl);
 
     this.ws.onopen = () => {
