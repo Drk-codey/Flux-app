@@ -115,7 +115,7 @@ export function LandingPage() {
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             className="relative w-full max-w-lg mx-auto lg:max-w-none"
           >
-            <div className="glass-ui rounded-[32px] md:rounded-[40px] p-6 md:p-8 w-full aspect-[4/5] lg:aspect-[4/5] relative overflow-hidden border-white/40 shadow-2xl animate-float">
+            <div className="glass-ui rounded-[32px] md:rounded-[40px] p-6 md:p-8 mt-8 w-full h-[550px] aspect-4/5 lg:aspect-4/5 relative overflow-hidden border-white/40 shadow-2xl animate-float">
               {/* Fake UI Content */}
               <div className="space-y-6">
                 {[
@@ -340,8 +340,8 @@ export function LandingPage() {
           </div>
           <div className="flex flex-wrap justify-center gap-8 md:gap-12 text-[10px] md:text-xs font-bold uppercase tracking-widest opacity-60">
             <a href="#" className="hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="hover:text-white transition-colors">Github</a>
-            <a href="#" className="hover:text-white transition-colors">Status</a>
+            <a href="https://github.com/Drk-codey/Flux-app" className="hover:text-white transition-colors">Github</a>
+            <a href="https://vercel.com/drkcodeys-projects/flux-app" className="hover:text-white transition-colors">Status</a>
           </div>
           <p className="text-[9px] md:text-[10px] uppercase font-bold tracking-widest opacity-40">
             © 2026 Flux Cryptography Group.
