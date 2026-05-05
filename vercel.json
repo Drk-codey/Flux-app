@@ -3,6 +3,10 @@
     {
       "source": "/api/(.*)",
       "destination": "https://whisperbox.koyeb.app/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
