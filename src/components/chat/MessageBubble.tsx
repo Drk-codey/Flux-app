@@ -29,7 +29,7 @@ export function MessageBubble({ message, isSentByMe, showTimestamp }: Props) {
       transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
       className={`flex mb-1.5 ${isSentByMe ? 'justify-end' : 'justify-start'}`}
     >
-      <div className={`flex flex-col ${isSentByMe ? 'items-end' : 'items-start'} max-w-[78%] sm:max-w-[65%]`}>
+      <div className={`flex flex-col ${isSentByMe ? 'items-end' : 'items-start'} w-full max-w-[90%] md:max-w-[85%] lg:max-w-[75%]`}>
         {message.decrypting ? (
           <div
             className="px-4 py-3 rounded-2xl flex items-center gap-2"
@@ -64,7 +64,7 @@ export function MessageBubble({ message, isSentByMe, showTimestamp }: Props) {
           <>
             <div className={isSentByMe ? 'bubble-out' : 'bubble-in'}>
               {/* Encrypted message text */}
-              <p className="text-sm leading-relaxed break-words whitespace-pre-wrap">{message.text}</p>
+              <p className="text-sm leading-relaxed wrap-break-word whitespace-pre-wrap">{message.text}</p>
 
               {/* Time + delivery status */}
               <div className={`flex items-center gap-1 mt-1.5 ${isSentByMe ? 'justify-end' : 'justify-start'}`}>
