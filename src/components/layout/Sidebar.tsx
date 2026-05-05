@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, MessageCircle, Search, Zap } from 'lucide-react';
+import { Plus, MessageCircle, Search } from 'lucide-react';
 import { useChatStore } from '../../store/chatStore';
 import { apiClient } from '../../lib/api/client';
 import { UserSearchModal } from './UserSearchModal';

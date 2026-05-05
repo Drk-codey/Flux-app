@@ -1,18 +1,11 @@
-import React, { useState } from 'react';
+
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { LoginForm } from '../components/auth/LoginForm';
-import { ShieldCheck, Zap, Lock, ArrowRight } from 'lucide-react';
+import { Zap, ArrowRight } from 'lucide-react';
 import LoginImg from '../assets/Login-img.webp';
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (delay = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, delay, ease: [0.16, 1, 0.3, 1] },
-  }),
-};
+
 
 export function LoginPage() {
   return (

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Zap, Lock, Shield, MessageCircle, ArrowRight, Check, Key, Globe } from 'lucide-react';
+import { Zap, Lock, Shield, ArrowRight, Check, Key, Globe } from 'lucide-react';
 
 const features = [
   {

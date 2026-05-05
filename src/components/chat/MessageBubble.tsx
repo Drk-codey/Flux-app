@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { format, isToday, isYesterday } from 'date-fns';
 import { Lock, AlertTriangle, Check, CheckCheck } from 'lucide-react';
 import type { DecryptedMessage } from '../../store/chatStore';
@@ -21,7 +21,7 @@ function formatDateDivider(dateStr: string) {
   return format(d, 'EEEE, MMM d');
 }
 
-export function MessageBubble({ message, isSentByMe, showTimestamp }: Props) {
+export function MessageBubble({ message, isSentByMe }: Props) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 10, scale: 0.97 }}

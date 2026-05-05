@@ -10,7 +10,7 @@ import { apiClient } from '../../lib/api/client';
 import { Lock, Phone, Video, MoreVertical, ArrowDown } from 'lucide-react';
 import type { DecryptedMessage } from '../../store/chatStore';
 import { useState } from 'react';
-import { format, isSameDay } from 'date-fns';
+import { format } from 'date-fns';
 
 interface Props {
   recipientId: string;
